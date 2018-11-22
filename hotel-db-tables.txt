@@ -45,11 +45,11 @@ CREATE TABLE GUEST_ROOM
 (Room_Num INT NOT NULL,
 Num_beds INT NOT NULL,
 Bed_type VARCHAR(50),
-Smoking_status VARCHAR(5),
+Smoking_status tinyint(1) DEFAULT 0,
 primary key(Room_num),
 CONSTRAINT roomNo_range CHECK (Room_Num BETWEEN 1 and 999),
 CONSTRAINT bedType CHECK (Bed_type IN('King','Queen','Twin','Double'),
-CONSTRAINT Smoking_status CHECK (Smoking_status IN('s', 'n/s'));
+CONSTRAINT Smoking_status CHECK (Smoking_status IN('0', '1'));
 
 CREATE TABLE CONFERENCE_ROOM 
 (CR_Number VARCHAR(3) NOT NULL,
@@ -66,17 +66,17 @@ Start_date DATE NOT NULL,
 End_Date DATE NOT NULL,
 G_Email VARCHAR(50) NOT NULL,
 primary key(Reservation_ID,G_Name,Room_Number,G_Email),
-FOREIGN KEY(G_NAME) REFERENCES GUEST(G_NAME)ON DELETE CASCADE,
+FOREIGN KEY(G_NAME) REFERENCES GUEST(G_NAME),
 FOREIGN KEY(Room_Number) REFERENCES CONFERENCE_ROOM(CR_Number),
 FOREIGN KEY(Room_Number) REFERENCES GUEST_ROOM(Room_Num) ,
-FOREIGN KEY(G_Email) REFERENCES GUEST(Email)ON DELETE CASCADE,
+FOREIGN KEY(G_Email) REFERENCES GUEST(Email),
 CONSTRAINT date_order CHECK (Start_date < End_Date));
 
 
 CREATE TABLE MEMBERSHIP 
 (G_email VARCHAR(50) NOT NULL,
 G_name VARCHAR(50) NOT NULL,
-member_ID VARCHAR(9) NOT NULL,
+member_ID VARCHAR(9),
 member_status VARCHAR(10) DEFAULT 'Bronze',
 member_since DATE,
 primary key G_email,G_name,member_ID),
