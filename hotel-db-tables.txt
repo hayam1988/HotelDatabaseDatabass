@@ -27,7 +27,6 @@ FOREIGN KEY(Dep_ID) REFERENCES DEPARTMENT(DEP_ID));
 CREATE TABLE DEPARTMENT 
 (Name VARCHAR(50) NOT NULL,
 Dep_ID INT NOT NULL,
-NUM_employees INT NOT NULL,
 Dep_Head VARCHAR(9) NOT NULL
 primary key(Dep_ID),
 FOREIGN KEY(Dep_Head) REFERENCES EMPLOYEE(Manager_ID));
@@ -45,19 +44,12 @@ CREATE TABLE GUEST_ROOM
 (Room_Num INT NOT NULL,
 Num_beds INT NOT NULL,
 Bed_type VARCHAR(50),
-<<<<<<< HEAD
-Smoking_status tinyint(1) DEFAULT 0,
-primary key(Room_num),
-CONSTRAINT roomNo_range CHECK (Room_Num BETWEEN 1 and 999),
-CONSTRAINT bedType CHECK (Bed_type IN('King','Queen','Twin','Double'),
-CONSTRAINT Smoking_status CHECK (Smoking_status IN('0', '1'));
-=======
 Smoking_status TINYINT DEFAULT 0,
 primary key(Room_num),
 CONSTRAINT roomNo_range CHECK (Room_Num BETWEEN 1 and 999),
 CONSTRAINT bedType CHECK (Bed_type IN('King','Queen','Twin','Full')),
 CONSTRAINT Smoking_status CHECK (Smoking_status = 0 OR Smoking_status = 1));
->>>>>>> ffe07af2ca2fb9f2250d9ccbc4b686635318be69
+
 
 CREATE TABLE CONFERENCE_ROOM 
 (CR_Number VARCHAR(3) NOT NULL,
@@ -70,9 +62,9 @@ CREATE TABLE RESERVATION
 G_Name VARCHAR(50) NOT NULL,
 Room_Number INT NOT NULL,
 Number_Of_Guests INT DEFAULT 1,
-Start_date DATE NOT NULL,
-End_Date DATE NOT NULL,
-G_Email VARCHAR(50) NOT NULL,
+Start_date DATE NOT NULL UNIQUE,
+End_Date DATE NOT NULL UNIQUE,
+G_Email VARCHAR(50) NOT NULL ,
 primary key(Reservation_ID,G_Name,Room_Number,G_Email),
 FOREIGN KEY(G_NAME) REFERENCES GUEST(G_NAME),
 FOREIGN KEY(Room_Number) REFERENCES CONFERENCE_ROOM(CR_Number),
